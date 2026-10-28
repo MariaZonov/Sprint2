@@ -3,21 +3,21 @@ class EmployeeSalary:
 
     def __init__(self, name, hours, rest_days, email):
         self.name = name
-        self.hours = self.get_hours(hours, rest_days)
+        self.hours = hours
         self.rest_days = rest_days
-        self.email = self.get_email(email, name)
-
-    @staticmethod
-    def get_hours(hours, rest_days):
-        if hours is None:
-            return (7 - rest_days) * 8
-        return hours
+        self.email = email
 
     @classmethod
-    def get_email(cls, email, name):
+    def get_hours(cls, name, hours, rest_days, email):
+        if hours is None:
+            hours = (7 - rest_days) * 8
+        return cls(name, hours, rest_days, email)
+
+    @classmethod
+    def get_email(cls, name, hours, rest_days, email):
         if email is None:
-            return f"{name}@email.com"
-        return email
+            email = f"{name}@email.com"
+        return cls(name, hours, rest_days, email)
 
     @classmethod
     def set_hourly_payment(cls, hourly_payment):
@@ -26,8 +26,12 @@ class EmployeeSalary:
     def salary(self):
         return self.hours * self.hourly_payment
 
-employee = EmployeeSalary('Olga', 35, 2, None)
+employee1 = EmployeeSalary.get_hours('Olga', None, 2, 'olga@email.com')
 
-print(employee.hours)
-print(employee.email)
-print(employee.salary())
+print(employee1.hours)
+print(employee1.salary())
+
+employee2 = EmployeeSalary.get_email('Anna', 35, 2, None)
+
+print(employee2.email)
+print(employee2.salary())
